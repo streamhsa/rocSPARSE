@@ -34,7 +34,7 @@ rocSPARSECI:
     rocsparse.paths.build_command = './install.sh -c'
 
     // Define test architectures, optional rocm version argument is available
-    def nodes = new dockerNodes(['gfx900 && centos7', 'gfx906 && ubuntu', 'gfx900 && ubuntu && hip-clang', 'gfx906 && ubuntu && hip-clang'], rocsparse)
+    def nodes = new dockerNodes(['gfx900 && ubuntu && hip-clang', 'gfx906 && ubuntu && hip-clang'], rocsparse)
 
     boolean formatCheck = true
 
@@ -51,7 +51,7 @@ rocSPARSECI:
             command = """#!/usr/bin/env bash
                     set -x
                     cd ${project.paths.project_build_prefix}
-                    LD_LIBRARY_PATH=/opt/rocm/hcc/lib CXX=/opt/rocm/bin/hipcc ${project.paths.build_command} --hip-clang
+                    LD_LIBRARY_PATH=/opt/rocm/lib CXX=/opt/rocm/bin/hipcc ${project.paths.build_command} --hip-clang
                 """
         }
         else
@@ -100,7 +100,7 @@ rocSPARSECI:
                 command = """#!/usr/bin/env bash
                         set -x
                         cd ${project.paths.project_build_prefix}/build/release/clients/staging
-                        LD_LIBRARY_PATH=/opt/rocm/hcc/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./rocsparse-test --gtest_also_run_disabled_tests --gtest_output=xml --gtest_color=yes #--gtest_filter=*nightly*-*known_bug* #--gtest_filter=*nightly*
+                        LD_LIBRARY_PATH=/opt/rocm/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./rocsparse-test --gtest_also_run_disabled_tests --gtest_output=xml --gtest_color=yes #--gtest_filter=*nightly*-*known_bug* #--gtest_filter=*nightly*
                     """
             }
             else
@@ -108,7 +108,7 @@ rocSPARSECI:
                 command = """#!/usr/bin/env bash
                         set -x
                         cd ${project.paths.project_build_prefix}/build/release/clients/staging
-                        LD_LIBRARY_PATH=/opt/rocm/hcc/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./rocsparse-test --gtest_also_run_disabled_tests --gtest_output=xml --gtest_color=yes #--gtest_filter=*quick*:*pre_checkin*-*known_bug* #--gtest_filter=*checkin*
+                        LD_LIBRARY_PATH=/opt/rocm/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./rocsparse-test --gtest_also_run_disabled_tests --gtest_output=xml --gtest_color=yes #--gtest_filter=*quick*:*pre_checkin*-*known_bug* #--gtest_filter=*checkin*
                     """
             }
 
