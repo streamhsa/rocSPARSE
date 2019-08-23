@@ -60,6 +60,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# If OpenMP is available, we can use it to speed up some tests
+find_package(OpenMP QUIET)
+
 if(BUILD_CLIENTS_SAMPLES)
   add_subdirectory(samples)
 endif()
@@ -71,4 +74,15 @@ endif()
 if(BUILD_CLIENTS_TESTS)
   enable_testing()
   add_subdirectory(tests)
+endif()
+
+# Client packaging
+include(../cmake/Packaging.cmake)
+
+if(BUILD_CLIENTS_SAMPLES OR BUILD_CLIENTS_BENCHMARKS OR BUILD_CLIENTS_TESTS)
+  rocm_create_package_clients(LIB_NAME rocsparse
+                              DESCRIPTION "Radeon Open Compute SPARSE library"
+                              MAINTAINER "Nico Trost"
+                              SECTION "dev"
+                              VERSION ${rocsparse_VERSION})
 endif()
