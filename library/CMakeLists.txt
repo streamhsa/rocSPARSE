@@ -59,6 +59,8 @@ include(src/CMakeLists.txt)
 add_library(rocsparse ${rocsparse_source} ${rocsparse_headers_public})
 add_library(roc::rocsparse ALIAS rocsparse)
 
+set ( CMAKE_SHARED_LINKER_FLAGS "-Wl,--rpath,$ENV{ROCM_RPATH}" )
+
 # Target compile options
 target_compile_options(rocsparse PRIVATE -fno-gpu-rdc)
 foreach(target ${AMDGPU_TARGETS})
@@ -83,7 +85,8 @@ target_include_directories(rocsparse
 )
 
 # Target properties
-rocm_set_soversion(rocsparse ${rocsparse_SOVERSION})
+set_target_properties(rocsparse PROPERTIES SOVERSION ${LIB_VERSION_MAJOR} )
+set_target_properties(rocsparse PROPERTIES VERSION ${LIB_VERSION_STRING} )
 set_target_properties(rocsparse PROPERTIES CXX_VISIBILITY_PRESET "hidden" VISIBILITY_INLINES_HIDDEN ON)
 set_target_properties(rocsparse PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 set_target_properties(rocsparse PROPERTIES DEBUG_POSTFIX "-d")

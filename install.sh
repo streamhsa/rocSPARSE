@@ -113,7 +113,7 @@ install_packages( )
   fi
 
   # dependencies needed for library and clients to build
-  local library_dependencies_ubuntu=( "make" "cmake-curses-gui" "hip_hcc" "pkg-config" "libnuma1" "rocprim")
+  local library_dependencies_ubuntu=( "make" "cmake" "hip_hcc" "pkg-config" "libnuma1" "rocprim")
   local library_dependencies_centos=( "epel-release" "make" "cmake3" "hip_hcc" "gcc-c++" "rpm-build" "numactl-libs" "rocprim" )
   local library_dependencies_fedora=( "make" "cmake" "hip_hcc" "gcc-c++" "libcxx-devel" "rpm-build" "numactl-libs" "rocprim" )
 
@@ -284,7 +284,7 @@ fi
 
 # We append customary rocm path; if user provides custom rocm path in ${path}, our
 # hard-coded path has lesser priority
-export PATH=${PATH}:/opt/rocm/bin
+export PATH=${PATH}:/opt/rocm-2.8.1/bin
 
 pushd .
   # #################################################
@@ -314,9 +314,9 @@ pushd .
 
   # Build library with AMD toolchain because of existense of device kernels
   if [[ "${build_clients}" == true ]]; then
-    CXX=${compiler} ${cmake_executable} ${cmake_common_options} ${cmake_client_options} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX=rocsparse-install -DCPACK_PACKAGING_INSTALL_PREFIX=/opt/rocm ../..
+    CXX=${compiler} ${cmake_executable} ${cmake_common_options} ${cmake_client_options} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX=rocsparse-install -DCPACK_PACKAGING_INSTALL_PREFIX=/opt/rocm-2.8.1 ../..
   else
-    CXX=${compiler} ${cmake_executable} ${cmake_common_options} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX=rocsparse-install -DCPACK_PACKAGING_INSTALL_PREFIX=/opt/rocm ../..
+    CXX=${compiler} ${cmake_executable} ${cmake_common_options} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX=rocsparse-install -DCPACK_PACKAGING_INSTALL_PREFIX=/opt/rocm-2.8.1 ../..
   fi
   check_exit_code
 
